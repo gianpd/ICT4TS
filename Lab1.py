@@ -33,7 +33,7 @@ permanent_bookings = db['PermanentBookings']
 permanent_parkings = db['PermanentParkings']
 enjoy_permanent_bookings = db['enjoy_PermanentBookings']
 enjoy_permanent_parkings = db['enjoy_PermanentParkings']
-
+"""
 #
 # Find documents number per collection
 #
@@ -79,13 +79,13 @@ torino_e = enjoy_permanent_parkings.find({'city':'Torino'})
 torino_e_cars = torino_e.distinct('plate')
 print(f"Torino, Enjoy: {len(torino_e_cars)} cars")
 print()
-
+"""
 #
 # Number of cars booked in December 2017 per city
 # find 2017-12-1 <= date < 2018-1-1
 start = time.mktime(time.strptime('2017-12-1','%Y-%m-%d'))
 end = time.mktime(time.strptime('2018-1-1','%Y-%m-%d'))
-
+"""
 torino = permanent_bookings.find({
     'city':'Torino',
     'init_time':{
@@ -116,7 +116,7 @@ torino_e = enjoy_permanent_bookings.find({
 torino_eb_cars = torino_e.distinct('plate')
 print(f"Torino, Enjoy: {len(torino_eb_cars)} cars booked")
 print()
-
+"""
 #
 # Number of cars booked in December 2017 per city
 # find 2017-12-1 <= date < 2018-1-1
@@ -129,12 +129,8 @@ torino = permanent_bookings.find({
         '$gte':start,
         '$lt':end
     },
-    'public_transport':{
-        'duration':{'$ne':-1}
-    },
-    'walking':{
-        'duration':{'$ne':-1}
-    }
+    'public_transport.duration':{'$ne':-1},
+    'walking.duration':{'$ne':-1}
 })
 torino_b_cars = torino.distinct('plate')
 print(f"Torino, Car2Go: {len(torino_b_cars)} cars booked")
@@ -145,13 +141,11 @@ portland = permanent_bookings.find({
         '$gte':start,
         '$lt':end
     },
-    'public_transport':{
-        'duration':{'$ne':-1}
-    },
-    'walking':{
-        'duration':{'$ne':-1}
-    }
+    'public_transport.duration':{'$ne':-1},
+    'walking.duration':{'$ne':-1}
 })
+for item in portland:
+    pprint.pprint(item['public_transport'])
 portland_b_cars = portland.distinct('plate')
 print(f"Portland, Car2Go: {len(portland_b_cars)} cars booked")
 
@@ -161,12 +155,8 @@ torino_e = enjoy_permanent_bookings.find({
         '$gte':start,
         '$lt':end
     },
-    'public_transport':{
-        'duration':{'$ne':-1}
-    },
-    'walking':{
-        'duration':{'$ne':-1}
-    }
+    'public_transport.duration':{'$ne':-1},
+    'walking.duration':{'$ne':-1}
 })
 torino_eb_cars = torino_e.distinct('plate')
 print(f"Torino, Enjoy: {len(torino_eb_cars)} cars booked")
